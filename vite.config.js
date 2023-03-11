@@ -9,9 +9,9 @@ export default defineConfig({
       },
     }),
   ],
-  server: {
-    proxy: {
-      "/api/v1/": "http://localhost:5000/",
-    },
-  },
+  // server: {
+  //   proxy: {
+  //     "/api/v1/": "http://localhost:5000/",
+  //   },
+  // },
 })
