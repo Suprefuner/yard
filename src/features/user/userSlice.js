@@ -49,7 +49,7 @@ export const loginWithGoogle = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       // await fetch("http://localhost:5000/api/v1/auth/google")
-      await fetch("https://yard-hnyg.onrender.com/api/v1/auth/google")
+      await fetch("https://yard-api.onrender.com/api/v1/auth/google")
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
