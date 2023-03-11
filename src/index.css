@@ -1,0 +1,120 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #ff9900;
+  --secondary-color: #131921;
+  --accent-color: #555;
+  --navbar-size: 6rem;
+  --navbar-mobile-size: 6.4rem;
+  --footer-size: 46rem;
+  --footer-navbar-mobile-size: 4.5rem;
+  --upload-image-container-width: 29rem;
+}
+
+@layer base {
+  /* 
+  =====================================
+    GENERAL SETUP
+  =====================================
+  */
+  html {
+    font-size: 62.5%;
+    font-family: "Poppins", sans-serif;
+  }
+
+  body {
+    font-size: 1.6rem;
+    @apply scroll-smooth;
+  }
+
+  img {
+    vertical-align: middle;
+  }
+
+  ul,
+  ol {
+    list-style: none;
+  }
+  /* 
+  =====================================
+    UTIL CLASS SETUP
+  =====================================
+  */
+  .btn {
+    @apply rounded-lg px-2 py-0.5 capitalize cursor-pointer text-center text-white transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply bg-primary hover:bg-primarydark;
+  }
+  .btn-secondary {
+    @apply bg-secondary hover:bg-trinary;
+  }
+  .btn-trinary {
+    @apply bg-trinary hover:bg-secondary;
+  }
+  .btn-outline {
+    @apply border-[1px] border-trinary text-secondary hover:bg-trinary hover:text-white;
+  }
+
+  .btn-outline.active {
+    @apply bg-trinary text-white;
+  }
+}
+
+.swiper-pagination-bullet {
+  --swiper-pagination-bullet-width: 10px;
+  --swiper-pagination-bullet-height: 10px;
+  --swiper-pagination-bullet-inactive-color: #fff;
+  --swiper-pagination-bullet-inactive-opacity: 0.7;
+  --swiper-pagination-bullet-horizontal-gap: 8px;
+  transition: 0.2s;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: var(--primary-color);
+  outline: 1px solid var(--primary-color);
+  outline-offset: 2px;
+  scale: 1.2;
+}
+
+/* .swiper-button-prev,
+.swiper-button-next {
+  width: 3rem;
+  aspect-ratio: 1;
+  background-color: rgb(0, 0, 0, 0.2);
+  padding: 2rem;
+  transform: translateY(190%);
+}
+
+.swiper-button-prev {
+  left: 0;
+}
+
+.swiper-button-next {
+  left: calc(3rem + 1rem);
+}*/
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  content: "";
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  position: absolute;
+  inset: 10px;
+  background-color: white;
+  opacity: 0.75;
+  mask-image: url("./assets/prev.svg");
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+.swiper-button-next:after {
+  rotate: 180deg;
+}
