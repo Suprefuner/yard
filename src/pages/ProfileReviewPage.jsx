@@ -11,8 +11,6 @@ const ProfileReviewPage = () => {
   const dispatch = useDispatch()
   const { userId } = useParams()
 
-  console.log(userId)
-
   useEffect(() => {
     dispatch(getAllMyReviews(userId || user._id))
   }, [])
@@ -41,8 +39,10 @@ const ProfileReviewPage = () => {
         <div className="form-row">
           <label htmlFor="sort">sort by</label>
           <select name="sort" id="sort">
-            {sortOptions.map((option) => (
-              <option value={option}>{option}</option>
+            {sortOptions.map((option, i) => (
+              <option key={i} value={option}>
+                {option}
+              </option>
             ))}
           </select>
         </div>

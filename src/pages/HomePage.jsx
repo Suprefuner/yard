@@ -71,9 +71,9 @@ const HomePage = () => {
           <div className="listings">
             {listings.map((listing) =>
               isDesktop() ? (
-                <ListingCard key={listing._id} {...listing} />
+                <ListingCard key={listing._id + "desktop"} {...listing} />
               ) : (
-                <ListingCardMobile key={listing._id} {...listing} />
+                <ListingCardMobile key={listing._id + "mobile"} {...listing} />
               )
             )}
           </div>

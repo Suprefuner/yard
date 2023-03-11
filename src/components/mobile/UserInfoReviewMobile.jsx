@@ -14,7 +14,7 @@ const UserInfoReviewMobile = ({
   return (
     <Wrapper>
       <div className="photo-container">
-        <img src={photo.url} alt="user photo" className="user-photo" />
+        <img src={photo?.url} alt="user photo" className="user-photo" />
       </div>
       <div className="user-detail">
         <div className="row">

@@ -112,6 +112,10 @@ const SingleListingPage = () => {
           currentPage={name}
         />
         <SingleListingSlider photos={photos} />
+        {/* <SingleListingSlider /> */}
+        {/* {photos.map((photo) => (
+          <img src={photo.url} alt="photo" key={photo.url} />
+        ))} */}
         <section className="listing-information">
           <div className="details">
             <div className="row mobile-chat-row">

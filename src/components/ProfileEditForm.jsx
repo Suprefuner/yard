@@ -122,8 +122,9 @@ const ProfileEditForm = ({ type, title, list, expand = false, params }) => {
       </div>
       <div className={showForm ? "body show" : "body"}>
         <form onSubmit={handleSubmit}>
-          {list.map((property) => (
+          {list.map((property, i) => (
             <FormRow
+              key={i}
               type={inputType[property].type}
               name={property}
               value={values[property]}

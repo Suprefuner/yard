@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation } from "swiper"
 import "swiper/css"
@@ -6,26 +5,24 @@ import "swiper/css/navigation"
 import { isDesktop } from "../utils/helpers"
 import { RxImage } from "react-icons/rx"
 
-const SingleListingSlider = () => {
-  const { listing } = useSelector((store) => store.singleListing)
-  const { photos } = listing
-
+const SingleListingSlider = ({ photos }) => {
   return (
     <div className="select-none relative">
       <Swiper
+        className="hidden lg:block"
         modules={[Navigation]}
-        loop={true}
         navigation={true}
+        loop={true}
         spaceBetween={10}
         slidesPerView={isDesktop() ? 3 : 1}
       >
-        {photos.map(({ url, publicId }) => (
+        {photos.map((photo, i) => (
           <SwiperSlide
-            key={publicId}
+            key={i}
             className="max-w-[400px] h-[25rem] lg:h-[40rem] rounded-xl overflow-hidden"
           >
             <img
-              src={url}
+              src={photo.url}
               alt={`product photo`}
               className="w-full h-full object-cover"
             />
@@ -35,8 +32,7 @@ const SingleListingSlider = () => {
       <div
         className="
           flex items-center gap-0.5 p-0.5 px-1 
-          lg:(p-1 gap-1)
-          text-sm bg-white/50
+          lg:(p-1 gap-1) text-sm bg-white/50
           absolute right-0.5 bottom-0.5 z-20
           rounded-xl border border-slate-300 shadow-sm
           "

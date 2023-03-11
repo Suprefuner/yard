@@ -25,7 +25,7 @@
     "react-toastify": "^9.1.1",
     "redux-persist": "^6.0.0",
     "socket.io-client": "^4.6.1",
-    "swiper": "^9.0.5",
+    "swiper": "^9.1.0",
     "twin.macro": "^3.1.0"
   },
   "devDependencies": {
