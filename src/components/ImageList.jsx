@@ -53,7 +53,7 @@ const ImageList = ({ setUploadedPhotos, setPhotos }) => {
   return (
     <Wrapper>
       {/* COVER PHOTO OR OTHER PHOTO */}
-      {photos.map((photo, i) =>
+      {photos?.map((photo, i) =>
         i === 0 ? (
           <div className="image-container" key={photo?.publicId}>
             <h4>cover</h4>

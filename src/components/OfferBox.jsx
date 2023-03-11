@@ -35,7 +35,7 @@ const OfferBox = () => {
         </div>
         <div className="info">
           <div className="row">
-            <span>{rating.toFixed(1)}</span>
+            <span>{rating?.toFixed(1)}</span>
             <Stars rating={rating} />
             <span>{numOfReviews} reviews</span>
           </div>
@@ -93,6 +93,10 @@ const Wrapper = styled.div`
 
     .photo-container {
       ${tw`w-7 aspect-square rounded-full overflow-hidden`}
+
+      img {
+        ${tw`w-full h-full object-cover`}
+      }
     }
 
     .row {

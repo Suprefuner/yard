@@ -5,11 +5,17 @@ import { showOptions } from "../features/filter/filterSlice"
 import { useDispatch, useSelector } from "react-redux"
 
 // SHARE USE WITH CREATE LISTING FORM SO ADDED TYPE PARAMS
-const SelectInput = ({ name, handleChange, links, type = "filter" }) => {
+const SelectInput = ({
+  name,
+  category,
+  handleChange,
+  links,
+  type = "filter",
+}) => {
   const [showCategoryMenu, setShowCategoryMenu] = useState(false)
   // CONNECT OPTION AND LI VALUE =============================
   const [options, setOptions] = useState([])
-  const [selectedOption, setSelectedOption] = useState("")
+  const [selectedOption, setSelectedOption] = useState(category)
   // ========================================================
   const { filters, filtersOptionsShow } = useSelector((store) => store.filter)
   const dispatch = useDispatch()

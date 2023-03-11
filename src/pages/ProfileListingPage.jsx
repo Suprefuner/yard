@@ -12,7 +12,6 @@ import { isDesktop } from "../utils/helpers"
 const ProfileListingPage = () => {
   const { isLoading, listings } = useSelector((store) => store.listing)
   const { user } = useSelector((store) => store.user)
-  const { photo, username } = user
   const { userId } = useParams()
   const dispatch = useDispatch()
   const location = useLocation()
@@ -35,45 +34,12 @@ const ProfileListingPage = () => {
       {listings.length === 0 ? (
         <h1>Go create some listing</h1>
       ) : (
-        listings.map(
-          ({
-            _id,
-            name,
-            condition,
-            price,
-            photos,
-            numOfFavorite,
-            createdAt,
-            createdBy,
-          }) =>
-            isDesktop() ? (
-              <ListingCard
-                key={_id}
-                id={_id}
-                name={name}
-                condition={condition}
-                price={price}
-                photos={photos}
-                numOfFavorite={numOfFavorite}
-                createdAt={createdAt}
-                userPhoto={photo}
-                username={username}
-                createdBy={createdBy}
-              />
-            ) : (
-              <ListingCardMobile
-                key={_id}
-                id={_id}
-                name={name}
-                condition={condition}
-                price={price}
-                photos={photos}
-                numOfFavorite={numOfFavorite}
-                createdAt={createdAt}
-                createdBy={createdBy}
-                userPhoto={photo}
-              />
-            )
+        listings.map((item) =>
+          isDesktop() ? (
+            <ListingCard key={item._id} {...item} />
+          ) : (
+            <ListingCardMobile key={item._id} {...item} />
+          )
         )
       )}
     </Wrapper>

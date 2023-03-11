@@ -4,21 +4,31 @@ import { useNavigate, useParams } from "react-router-dom"
 import tw, { styled } from "twin.macro"
 import { BsChevronDoubleDown } from "react-icons/bs"
 import { UploadImage, ImageList, CreateListingForm } from "../components"
-import { turnOffIsUpdate } from "../features/singleListing/singleListingSlice"
+import {
+  getSingleListing,
+  turnOffIsUpdate,
+} from "../features/singleListing/singleListingSlice"
+import { updateSearchboxInView } from "../features/general/generalSlice"
 
 const EditListingPage = () => {
   // STORE IMAGE AS FILE TO UPLOAD TO CLOUDINARY
   const [uploadedPhotos, setUploadedPhotos] = useState([])
+  const [photos, setPhotos] = useState([])
   const { listing, isUpdate } = useSelector((store) => store.singleListing)
   const { id } = useParams()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!isUpdate) return
-    dispatch(turnOffIsUpdate())
-    navigate(`/listing/${id}`)
-  }, [listing])
+    dispatch(updateSearchboxInView(true))
+    dispatch(getSingleListing(id))
+  }, [])
+
+  // useEffect(() => {
+  //   if (!isUpdate) return
+  //   dispatch(turnOffIsUpdate())
+  //   navigate(`/listing/${id}`)
+  // }, [listing])
 
   // useEffect(() => {
   //   if (!isUpdate) return
@@ -29,8 +39,15 @@ const EditListingPage = () => {
     <Wrapper>
       <div className="container">
         <div className={`upload-image`}>
-          <UploadImage setUploadedPhotos={setUploadedPhotos} />
-          <ImageList setUploadedPhotos={setUploadedPhotos} />
+          <UploadImage
+            setUploadedPhotos={setUploadedPhotos}
+            photos={photos}
+            setPhotos={setPhotos}
+          />
+          <ImageList
+            setUploadedPhotos={setUploadedPhotos}
+            setPhotos={setPhotos}
+          />
           <div className="icon-container">
             <BsChevronDoubleDown className="icon" />
           </div>

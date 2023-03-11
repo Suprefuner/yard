@@ -196,7 +196,9 @@ const singleListingSlice = createSlice({
     },
     uploadPhoto: (state, { payload }) => {
       // FILTER OUT INITIAL EMPTY OBJECT
-      state.listing.photos = payload.filter((item) => item.url || item.publicId)
+      state.listing.photos = payload?.filter(
+        (item) => item.url || item.publicId
+      )
     },
     removePhoto: (state, { payload }) => {
       state.listing.photos = state.listing.photos.filter(

@@ -86,6 +86,7 @@ function App() {
             <Route path="profile" element={<ProfilePageShareLayout />}>
               <Route index element={<ProfileListingPage />} />
               <Route path=":userId" element={<ProfileListingPage />} />
+              <Route path="reviews/:userId" element={<ProfileReviewPage />} />
               <Route path="reviews" element={<ProfileReviewPage />} />
               <Route
                 path="edit"

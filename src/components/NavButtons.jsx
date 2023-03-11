@@ -77,12 +77,12 @@ const NavButtons = () => {
             </Link>
           </li>
           <li>
-            <Link to="/chat">
-              <FaRegComment className="icon" />
-              {/* FIXME FIX AFTER IMPLEMENT CHAT ROOM */}
-              <span className="notification">5</span>
-              {/* <FaRegCommentDots /> */}
-            </Link>
+            {/* FIXME FIX AFTER IMPLEMENT CHAT ROOM */}
+            {/* <Link to="/chat"> */}
+            <FaRegComment className="icon cursor-not-allowed" />
+            {/* <span className="notification">5</span> */}
+            {/* <FaRegCommentDots /> */}
+            {/* </Link> */}
           </li>
         </>
       ) : (

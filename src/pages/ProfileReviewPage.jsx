@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
 import tw, { styled } from "twin.macro"
 import { Stars, ReviewCard, Loading } from "../components"
 import { getAllMyReviews } from "../features/review/reviewSlice"
@@ -8,9 +9,12 @@ const ProfileReviewPage = () => {
   const { user, isLoading } = useSelector((store) => store.user)
   const { reviews } = useSelector((store) => store.review)
   const dispatch = useDispatch()
+  const { userId } = useParams()
+
+  console.log(userId)
 
   useEffect(() => {
-    dispatch(getAllMyReviews())
+    dispatch(getAllMyReviews(userId || user._id))
   }, [])
 
   if (isLoading) {

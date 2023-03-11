@@ -20,7 +20,7 @@ import { combineReducers } from "@reduxjs/toolkit"
 
 const persistConfig = {
   key: "root",
-  whitelist: ["favorite"],
+  whitelist: ["favorite", "singleListing"],
   version: 1,
   storage,
 }

@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { useParams, useNavigate, Link } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import tw, { styled } from "twin.macro"
 // REACT-ICON =============================================
 import { FaHeart, FaRegHeart } from "react-icons/fa"
 import { MdEmojiPeople, MdLocationPin } from "react-icons/md"
 import { BsStars } from "react-icons/bs"
-import { TiTick } from "react-icons/ti"
 // ========================================================
 import {
   UserInfo,
@@ -23,6 +22,7 @@ import { getSingleListing } from "../features/singleListing/singleListingSlice"
 import { toggleListingToFavoriteLocally } from "../features/favorite/favoriteSlice"
 import { getAllMyReviews } from "../features/review/reviewSlice"
 import { isDesktop } from "../utils/helpers"
+import { openAuthModal } from "../features/user/userSlice"
 
 const SingleListingPage = () => {
   const [localLoading, setLocalLoading] = useState(true)
@@ -67,9 +67,9 @@ const SingleListingPage = () => {
     navigate("/")
   }, [isDelete])
 
-  if (localLoading) {
-    return <Loading />
-  }
+  // if (localLoading) {
+  //   return <Loading />
+  // }
 
   const handleClickFavorite = () => {
     !user._id
@@ -87,6 +87,7 @@ const SingleListingPage = () => {
     numOfFavorite,
     photos,
     price,
+    status,
   } = listing
 
   let tradeMethod = []
@@ -138,6 +139,9 @@ const SingleListingPage = () => {
                     : numOfFavorite + 1}
                 </span>
               </div>
+              {status === "reserved" && (
+                <div className="reserve-tag">reserved</div>
+              )}
             </div>
             <h2 className="price">HK${price.toFixed(2)}</h2>
 
@@ -227,7 +231,7 @@ const Wrapper = styled.main`
           ${tw`flex items-center`}
         }
 
-        .row {
+        .row:not(:has(.favorite)) {
           ${tw`gap-1`}
         }
 
@@ -238,8 +242,12 @@ const Wrapper = styled.main`
           }
         }
 
+        .row:has(.favorite) {
+          ${tw`gap-2`}
+        }
+
         .favorite {
-          ${tw`ml-1 gap-0.5`}
+          ${tw`gap-0.5`}
 
           .icon {
             ${tw`text-md cursor-pointer transition hover:scale-110`}
@@ -252,6 +260,10 @@ const Wrapper = styled.main`
           span {
             ${tw`translate-y-[1px]`}
           }
+        }
+
+        .reserve-tag {
+          ${tw`bg-secondary text-white py-[3px] px-1.5 rounded-xl capitalize `}
         }
 
         .mobile-chat-row {

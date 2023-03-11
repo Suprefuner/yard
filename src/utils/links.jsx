@@ -37,6 +37,7 @@ export const navLinks = [
     url: "/car",
     text: "car",
     icon: <TbCar />,
+    subLinks: ["car"],
   },
   {
     url: "/listing",

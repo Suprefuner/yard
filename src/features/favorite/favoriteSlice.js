@@ -38,6 +38,7 @@ const favoriteSlice = createSlice({
   initialState,
   reducers: {
     toggleListingToFavoriteLocally: (state, { payload }) => {
+      console.log(payload)
       if (state.favoriteList.map((item) => item._id).includes(payload._id)) {
         state.favoriteList = state.favoriteList.filter(
           (listing) => listing._id !== payload._id

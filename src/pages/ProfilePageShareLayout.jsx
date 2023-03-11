@@ -28,14 +28,14 @@ const ProfilePageShareLayout = () => {
         <main className="content">
           <div className="header">
             <NavLink
-              to="/profile"
+              to={`/profile${userId ? `/${userId}` : ""}`}
               end
               className={({ isActive }) => (isActive ? "active" : "")}
             >
               <div className="link">listing</div>
             </NavLink>
             <NavLink
-              to="/profile/reviews"
+              to={`/profile/reviews${userId ? `/${userId}` : ""}`}
               className={({ isActive }) => (isActive ? "active" : "")}
             >
               <div className="link">reviews</div>

@@ -73,7 +73,7 @@ const UserInfo = ({
       <Link to={`/profile/${_id}`}>
         <div className="photo-container">
           <img
-            src={isEdit ? photoInDataURL.url : photo.url}
+            src={isEdit ? photoInDataURL.url : photo?.url}
             alt="user photo"
             className="user-photo"
           />

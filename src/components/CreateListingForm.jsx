@@ -72,6 +72,7 @@ const CreateListingForm = ({ uploadedPhotos }) => {
     <Wrapper onSubmit={handleSubmit}>
       <SelectInput
         name="category"
+        category={category.name}
         handleChange={handleChange}
         links={navLinks}
         type="create"
