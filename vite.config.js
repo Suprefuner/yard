@@ -13,6 +13,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api/v1/": "https://yard-api.onrender.com/",
+      changeOrigin: true,
     },
     // proxy: {
     //   "/api/v1/": "http://localhost:5000/",
