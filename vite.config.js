@@ -10,9 +10,9 @@ export default defineConfig({
     }),
   ],
   // FIXME DEVELOPMENT
-  server: {
-    proxy: {
-      "/api/v1/": "http://localhost:5000/",
-    },
-  },
+  // server: {
+  //   proxy: {
+  //     "/api/v1/": "http://localhost:5000/",
+  //   },
+  // },
 })
