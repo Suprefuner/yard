@@ -61,7 +61,7 @@ function App() {
     dispatch(getCurrentUser())
     // FIXME DEVELOPEMENT
     // socket.current = io("ws://localhost:5000")
-    socket.current = io("https://yard-api.onrender.com")
+    socket.current = io("ws://yard-api.onrender.com")
   }, [])
 
   useEffect(() => {
