@@ -16,7 +16,7 @@ const HomePageSlider = () => {
       }}
       pagination={{ clickable: true }}
       spaceBetween={10}
-      slidesPerView={1.2}
+      slidesPerView={1.5}
     >
       {homeBanners.map((banner, i) => (
         <SwiperSlide key={i} className="overflow-hidden">

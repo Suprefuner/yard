@@ -30,7 +30,7 @@ const PriceFilterInput = ({ name }) => {
   const handleChange = (e) => {
     const { name, value } = e.target
 
-    // LIMIT USER INPUT NUMBER WIHTOUT USING <input type="number">
+    // LIMIT USER INPUT NUMBER WITHOUT USING <input type="number">
     const re = /^([0-9]+)$/
 
     // DELETE TO 0 CHANGE TO STRING "" FOR BETTER UX

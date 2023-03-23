@@ -1,24 +1,116 @@
+import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 import tw, { styled } from "twin.macro"
 import moment from "moment"
 import { MdReviews } from "react-icons/md"
 import Stars from "./Stars"
 import Loading from "./Loading"
-import { buyListing } from "../features/singleListing/singleListingSlice"
 import { switchReviewModal } from "../features/review/reviewSlice"
+import {
+  sendMessage,
+  updateChatWithOffer,
+  createChat,
+} from "../features/chat/chatSlice"
+import customFetch from "../utils/axios"
 
-const OfferBox = () => {
+const OfferBox = ({ socket }) => {
   const { user } = useSelector((store) => store.user)
+  const { chatList } = useSelector((store) => store.chat)
   const { listing, isLoading } = useSelector((store) => store.singleListing)
+  const [makeOffer, setMakeOffer] = useState(0)
+  const [hasOffer, setHasOffer] = useState(false)
   const dispatch = useDispatch()
 
-  const handleBuyListing = () => {
-    dispatch(buyListing(user._id))
+  const checkHasOffer = async (listingId) => {
+    const chat = await fetchChat(listingId)
+    if (!chat || !chat.offer) return
+    setHasOffer(true)
   }
+
+  const fetchChat = async (listingId) => {
+    const {
+      data: { data: chat },
+    } = await customFetch("/chat/searchChat", {
+      params: { listingId },
+    })
+
+    return chat
+  }
+
+  useEffect(() => {
+    checkHasOffer(listing._id)
+  }, [])
 
   const isParticipant = (userId) =>
     listing.status === "sold" &&
-    (listing.createdBy.user === userId || listing.soldTo === userId)
+    (listing.createdBy.user === userId || listing.soldTo.user === userId)
+
+  const handleOffer = async (e) => {
+    e.preventDefault()
+    if (!makeOffer) return
+
+    const chat = await fetchChat(listing._id)
+
+    if (!chat) {
+      dispatch(
+        createChat({
+          userId: listing.createdBy.user._id,
+          listing: listing._id,
+          type: "offer",
+          offerType: "made",
+          offerPrice: makeOffer,
+        })
+      )
+
+      // GIVE MONGODB TIME TO CREATE A NEW CHAT
+      setTimeout(() => {
+        console.log("emit event")
+        socket?.emit("createChat", {
+          senderId: user._id,
+          receiverId: listing.createdBy.user._id,
+          listing: listing,
+          type: "offer",
+          offerType: "made",
+          offerPrice: makeOffer,
+        })
+      }, 3000)
+    } else {
+      const message = {
+        chat: chat._id,
+        receiverId: chat.participants[0]._id,
+        type: "offer",
+        offerType: "made",
+        offerPrice: makeOffer,
+      }
+
+      socket?.emit("sendMessage", {
+        senderId: user._id,
+        receiverId: chat.participants[0]._id,
+        msg: message,
+      })
+
+      dispatch(sendMessage(message))
+    }
+
+    setMakeOffer("")
+  }
+
+  const handleChange = (e) => {
+    const { value } = e.target
+
+    // LIMIT USER INPUT NUMBER WITHOUT USING <input type="number">
+    const re = /^([0-9]+)$/
+
+    // DELETE TO 0 CHANGE TO STRING "" FOR BETTER UX
+    if (re.test(value) || value === "") {
+      setMakeOffer(() => (value !== "" ? +value : ""))
+    }
+  }
+
+  useEffect(() => {
+    setMakeOffer(listing.price)
+  }, [listing.price])
 
   if (isLoading) {
     return <Loading />
@@ -40,34 +132,53 @@ const OfferBox = () => {
             <span>{numOfReviews} reviews</span>
           </div>
           <span>joined {moment(createdAt, "YYYYMMDD").fromNow()}</span>
-          {/* <span>joined 5 years ago</span> */}
           <div className="row">
             <span>{follower} followers</span>
             <span>{following?.length} following</span>
           </div>
         </div>
       </div>
-      {listing.status !== "sold" ? (
+      {listing.status !== "sold" && !hasOffer && (
         <>
-          <form>
-            <input type="text" placeholder="$500" />
+          <form onSubmit={handleOffer}>
+            <input
+              type="text"
+              placeholder="$500"
+              value={makeOffer}
+              onChange={handleChange}
+            />
             <button className="btn btn-primary">make offer</button>
           </form>
-          <button
-            className="btn btn-primary btn-buy"
-            onClick={handleBuyListing}
+          <Link
+            className="btn btn-primary btn-chat"
+            to={`/chat?listing=${listing._id}`}
           >
-            buy now
-          </button>
+            {chatList.find((chat) => chat.listing._id === listing._id)
+              ? "view chats"
+              : "start chat"}
+          </Link>
         </>
-      ) : (
+      )}
+
+      {listing.status !== "sold" && hasOffer && (
+        <Link
+          className="btn btn-primary btn-chat"
+          to={`/chat?listing=${listing._id}`}
+        >
+          <div>view your chat</div>
+        </Link>
+      )}
+
+      {listing.status === "sold" && (
         <>
-          <button
-            className="btn btn-secondary btn-sold"
-            disabled={!isParticipant(user._id)}
-          >
-            {isParticipant(user._id) ? "sold - view chat" : "sold"}
-          </button>
+          <Link className="block mt-2" to="/chat">
+            <button
+              className="btn btn-secondary btn-sold"
+              disabled={!isParticipant(user._id)}
+            >
+              {isParticipant(user._id) ? "sold - view chat" : "sold"}
+            </button>
+          </Link>
           {/* prettier-ignore */}
           {(_id === user._id && !listing?.createdBy?.review) ||
             (listing?.soldTo?.user === user._id && !listing?.soldTo?.review && (
@@ -86,7 +197,7 @@ const OfferBox = () => {
 }
 
 const Wrapper = styled.div`
-  ${tw`border-[1px] rounded-xl p-2 space-y-2 relative hidden lg:block`}
+  ${tw`border rounded-xl p-2 space-y-2 relative hidden lg:block`}
 
   .user-detail {
     ${tw`text-sm flex items-center gap-2`}
@@ -117,12 +228,16 @@ const Wrapper = styled.div`
   }
 
   input {
-    ${tw`border-[1px] py-1 px-2 w-full rounded-lg`}
+    ${tw`border py-1 px-2 w-full rounded-lg`}
   }
 
-  .btn-buy,
+  .btn-chat {
+    ${tw`block`}
+  }
+
+  .btn-chat,
   .btn-sold {
-    ${tw`w-full`}
+    ${tw`w-full py-1`}
   }
 
   .btn-sold:disabled {

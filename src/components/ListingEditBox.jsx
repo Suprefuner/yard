@@ -15,7 +15,7 @@ import {
 
 const ListingEditBox = () => {
   const { listing } = useSelector((store) => store.singleListing)
-  const { status } = listing
+  const { status, numOfChats } = listing
 
   const { user } = useSelector((store) => store.user)
   const { username, photo, rating, numOfReviews } = user
@@ -43,7 +43,13 @@ const ListingEditBox = () => {
         </div>
       </div>
       {/* FIXME FIX WHEN IMPLEMENT CHAT ROOM */}
-      <div className="btn btn-secondary">view 2 chats</div>
+      <Link to="/chat">
+        <div className="btn btn-secondary">
+          {numOfChats
+            ? `view ${numOfChats} ${numOfChats > 1 ? "chats" : "chat"}`
+            : `view all chats`}
+        </div>
+      </Link>
       <ul>
         {status !== "sold" && (
           <>
@@ -91,7 +97,7 @@ const ListingEditBox = () => {
 }
 
 const Wrapper = styled.div`
-  ${tw`border-[1px] rounded-xl p-2 space-y-2 relative hidden lg:block`}
+  ${tw`border rounded-xl p-2 space-y-2 relative hidden lg:block`}
 
   .user-detail {
     ${tw`text-sm flex items-center gap-2`}
@@ -114,7 +120,7 @@ const Wrapper = styled.div`
   }
 
   .btn {
-    ${tw`hover:bg-primary`}
+    ${tw`hover:bg-primary mt-2`}
   }
 
   ul {

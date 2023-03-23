@@ -9,10 +9,10 @@ import { updateSearchboxInView } from "../features/general/generalSlice"
 const CreateListingPage = () => {
   // AT LEAST UPLOAD 1 PHOTO TO SHOW THE CREATE LISTING FORM
   const [showForm, setShowForm] = useState(false)
-  // STORE IMAGE AS FILE TO UPLOAD TO CLOUDINARY
+  // STORE IMAGE AS <FILE> TO UPLOAD TO CLOUDINARY
   const [uploadedPhotos, setUploadedPhotos] = useState([])
 
-  // FOR <UPLOADIMAGE> AND <IMAGELIST>, SINCE NEED TO PASS DOWN TO showImage() SO I CAN'T USE REDUX FUNCTION SINCE CAN'T DISPATCH
+  // FOR <UploadImage> AND <ImageList>, SINCE NEED TO PASS DOWN TO showImage() SO I CAN'T USE REDUX FUNCTION SINCE CAN'T DISPATCH
   const [photos, setPhotos] = useState([])
 
   const { createSuccess } = useSelector((store) => store.singleListing)

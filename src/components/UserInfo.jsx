@@ -70,53 +70,53 @@ const UserInfo = ({
 
   return (
     <Wrapper className="user-information">
-      <Link to={`/profile/${_id}`}>
-        <div className="photo-container">
-          <img
-            src={isEdit ? photoInDataURL.url : photo?.url}
-            alt="user photo"
-            className="user-photo"
-          />
-          {canEdit && (
-            <form onSubmit={confirmChange}>
-              <label htmlFor="upload-photo" className="edit-btn">
-                <BiEditAlt />
-              </label>
-              <input
-                type="file"
-                id="upload-photo"
-                hidden
-                onChange={handleChange}
-                multiple
-                accept="image/*"
-              />
-              <button className={`confirm-btn icon-holder ${isEdit && "show"}`}>
-                <TiTick />
-              </button>
-              <button
-                type="button"
-                className={`cancel-btn icon-holder ${isEdit && "show"}`}
-                onClick={cancelChange}
-              >
-                <TiTimes />
-              </button>
-            </form>
-          )}
+      {/* <Link to={`/profile/${_id}`}> */}
+      <div className="photo-container">
+        <img
+          src={isEdit ? photoInDataURL.url : photo?.url}
+          alt="user photo"
+          className="user-photo"
+        />
+        {canEdit && (
+          <form onSubmit={confirmChange}>
+            <label htmlFor="upload-photo" className="edit-btn">
+              <BiEditAlt />
+            </label>
+            <input
+              type="file"
+              id="upload-photo"
+              hidden
+              onChange={handleChange}
+              multiple
+              accept="image/*"
+            />
+            <button className={`confirm-btn icon-holder ${isEdit && "show"}`}>
+              <TiTick />
+            </button>
+            <button
+              type="button"
+              className={`cancel-btn icon-holder ${isEdit && "show"}`}
+              onClick={cancelChange}
+            >
+              <TiTimes />
+            </button>
+          </form>
+        )}
+      </div>
+      <div className="user-detail">
+        <h3>{username}</h3>
+        <div className="row">
+          <span>{rating?.toFixed(1)}</span>
+          <Stars rating={rating} />
+          <span>{numOfReviews} reviews</span>
         </div>
-        <div className="user-detail">
-          <h3>{username}</h3>
-          <div className="row">
-            <span>{rating?.toFixed(1)}</span>
-            <Stars rating={rating} />
-            <span>{numOfReviews} reviews</span>
-          </div>
-          <span>{moment(createdAt, "YYYYMMDD").fromNow()}</span>
-          <div className="row follower-row">
-            <span>{follower || 0} followers</span>
-            <span>{following?.length || 0} following</span>
-          </div>
+        <span>{moment(createdAt, "YYYYMMDD").fromNow()}</span>
+        <div className="row follower-row">
+          <span>{follower || 0} followers</span>
+          <span>{following?.length || 0} following</span>
         </div>
-      </Link>
+      </div>
+      {/* </Link> */}
       {_id !== user._id && (
         <div
           className={`btn btn-secondary btn-follow ${
@@ -155,7 +155,7 @@ const Wrapper = styled.div`
       ${tw`
         w-5 text-2xl bg-slate-800 hover:bg-teal-600
         border-4  border-white
-        right-0 bottom-1 z-10
+        right-0 bottom-1 z-20
       `}
     }
 

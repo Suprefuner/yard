@@ -8,7 +8,6 @@ const ListingCardMobile = ({
   condition,
   price,
   numOfFavorite,
-  createdAt,
   createdBy,
   photos,
 }) => {
@@ -30,7 +29,7 @@ const ListingCardMobile = ({
             <div className="user-photo">
               <img src={createdBy?.user?.photo?.url} alt="user photo" />
             </div>
-            <span>{createdBy.user.username}</span>
+            <span>{createdBy?.user.username}</span>
             {numOfFavorite > 0 ? (
               <FaHeart className="icon icon-full" />
             ) : (

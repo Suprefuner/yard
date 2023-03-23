@@ -151,10 +151,12 @@ export const updateListing = createAsyncThunk(
 
 export const updateListingStatus = createAsyncThunk(
   "singleListing/updateListingStatus",
-  async ({ id, status }, thunkAPI) => {
+  async ({ id, status, soldTo, offerPrice }, thunkAPI) => {
     try {
       const { data } = await customFetch.patch(`/listing/${id}/updateStatus`, {
         status,
+        soldTo,
+        offerPrice,
       })
       return data.listing
     } catch (error) {

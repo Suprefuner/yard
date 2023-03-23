@@ -6,6 +6,7 @@ import reviewReducer from "./features/review/reviewSlice"
 import filterReducer from "./features/filter/filterSlice"
 import favoriteReducer from "./features/favorite/favoriteSlice"
 import generalReducer from "./features/general/generalSlice"
+import chatReducer from "./features/chat/chatSlice"
 import storage from "redux-persist/lib/storage"
 import {
   persistReducer,
@@ -33,6 +34,7 @@ const reducer = combineReducers({
   favorite: favoriteReducer,
   review: reviewReducer,
   general: generalReducer,
+  chat: chatReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer)

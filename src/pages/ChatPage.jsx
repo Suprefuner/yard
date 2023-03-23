@@ -1,20 +1,165 @@
-// WILL IMPLEMENT CHAT ROOM FUNCTION LATER
+import { useEffect, useRef } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useSearchParams } from "react-router-dom"
 import tw, { styled } from "twin.macro"
+import Lottie from "lottie-react"
+import typingAnimation from "../assets/animation/3759-typing.json"
+import { ChatCard, Messenger } from "../components"
+import {
+  updateSearchboxInView,
+  toggleFooter,
+} from "../features/general/generalSlice"
+import {
+  setCurrentChat,
+  getChatMessages,
+  readUnreadMessage,
+  getAllMyChat,
+  addNewChat,
+  updateChatLastMsgAndStatus,
+  updateChatOfferStatus,
+} from "../features/chat/chatSlice"
+import { updateNumOfUnreadMessage } from "../features/user/userSlice"
 
-const ChatPage = () => {
+const ChatPage = ({ socket }) => {
+  const { chatList, currentChat, messages } = useSelector((store) => store.chat)
+  const dispatch = useDispatch()
+  const chatListRenderCounter = useRef(0)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const listing = searchParams.get("listing")
+
+  useEffect(() => {
+    dispatch(updateSearchboxInView(true))
+    dispatch(toggleFooter(false))
+    dispatch(getAllMyChat())
+
+    // return () => dispatch(toggleFooter(true))
+    return () => dispatch(toggleFooter(true))
+  }, [])
+
+  useEffect(() => {
+    // PREVENT INITIAL RENDER ERROR
+    if (!chatList.length) return
+    if (chatListRenderCounter.current !== 0) return
+
+    dispatch(setCurrentChat(chatList[0]?._id))
+    dispatch(getChatMessages({ chatId: chatList[0]?._id }))
+    chatListRenderCounter.current = 1
+
+    if (chatList.find((chat) => chat.listing._id === listing))
+      setSearchParams("")
+
+    const handleGetNewChat = (chat) => dispatch(addNewChat(chat))
+
+    socket?.on("getNewChat", handleGetNewChat)
+    return () => socket?.off("getNewChat", handleGetNewChat)
+  }, [chatList])
+
+  useEffect(() => {
+    const handleGetCancelOffer = ({
+      senderId,
+      chat,
+      type,
+      offerType,
+      offerPrice,
+    }) => {
+      dispatch(
+        updateChatLastMsgAndStatus({
+          chatId: chat,
+          msg: {
+            message: { text: "" },
+            type,
+            offerType,
+            offerPrice,
+            createdAt: Date.now(),
+          },
+          status: chat === currentChat._id,
+        })
+      )
+      dispatch(updateChatOfferStatus(false))
+    }
+    socket?.on("getCancelOffer", handleGetCancelOffer)
+    return () => socket?.off("getCancelOffer", handleGetCancelOffer)
+  }, [chatList, messages])
+
+  useEffect(() => {
+    dispatch(updateNumOfUnreadMessage())
+  }, [messages?.at(0)?._id])
+
+  const handleClick = (id) => {
+    dispatch(setCurrentChat(id))
+    dispatch(
+      getChatMessages({ chatId: id, userId: currentChat.participants[0]._id })
+    )
+    dispatch(readUnreadMessage(id))
+    setSearchParams("")
+  }
+
+  if (!chatList.length && !listing) {
+    return (
+      <Wrapper>
+        <div className="container">
+          <div>
+            <div className="chat-list"></div>
+            <div className="empty-content">
+              <h3>Doesn't have chat yet</h3>
+              <Lottie
+                animationData={typingAnimation}
+                loop={true}
+                className="animation"
+              />
+            </div>
+          </div>
+        </div>
+      </Wrapper>
+    )
+  }
+
   return (
     <Wrapper>
-      <div className="container">ChatPage</div>
+      <div className="container">
+        <div>
+          <div className="chat-list">
+            {chatList.map((chat) => (
+              <div onClick={() => handleClick(chat._id)} key={chat._id}>
+                <ChatCard {...chat} />
+              </div>
+            ))}
+          </div>
+          <Messenger socket={socket} />
+        </div>
+      </div>
     </Wrapper>
   )
 }
 
 const Wrapper = styled.main`
+  ${tw` bg-gray-50 h-screen`}
+
   .container {
     ${tw`
-      pt-[calc(var(--navbar-mobile-size) + 5rem)] 
-      lg:pt-[calc(var(--navbar-size) + 3rem)] 
+      pt-[calc(var(--navbar-mobile-size) + 2rem)]
+      lg:(pt-[calc(var(--navbar-size))])
+      h-screen
     `}
+
+    &>* {
+      ${tw`grid grid-cols-[40rem_1fr] border-l border-r h-full bg-white`}
+
+      & > *:last-child {
+        ${tw`flex-1`}
+      }
+    }
+
+    .empty-content {
+      ${tw`flex flex-col items-center justify-center gap-2 text-3xl font-semibold`}
+
+      .animation {
+        ${tw`w-10 -mt-2`}
+      }
+    }
+    .chat-list {
+      ${tw`border-r bg-white overflow-y-auto overflow-x-hidden w-[40rem] h-full`}
+    }
   }
 `
 export default ChatPage

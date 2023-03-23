@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useLocation, useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import tw, { styled } from "twin.macro"
 import { FaFilter } from "react-icons/fa"
 import {

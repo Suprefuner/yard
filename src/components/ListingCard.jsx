@@ -24,6 +24,7 @@ const ListingCard = ({
   createdAt,
   createdBy,
   photos,
+  status,
 }) => {
   const { favoriteList } = useSelector((store) => store.favorite)
   const { user } = useSelector((store) => store.user)
@@ -108,6 +109,9 @@ const ListingCard = ({
               </SwiperSlide>
             ))}
           </Swiper>
+          {status !== "sell" && (
+            <div className={`listing-status status-${status}`}>{status}</div>
+          )}
         </div>
         <div className="listing-information">
           <h4>{name}</h4>
@@ -213,7 +217,7 @@ const Wrapper = styled.div`
   }
 
   .images {
-    ${tw`w-full aspect-square`}
+    ${tw`w-full aspect-square relative`}
 
     & > * {
       ${tw`w-full h-full`}
@@ -221,6 +225,14 @@ const Wrapper = styled.div`
       & > * img {
         ${tw`w-full h-full bg-gray-200 object-cover`}
       }
+    }
+
+    .listing-status {
+      ${tw`
+        absolute right-1 bottom-1 z-10 w-max h-max py-0.5 px-1.5 rounded-xl 
+        [&.status-sold]:(bg-green-400 text-white )
+        [&.status-reserved]:(bg-gray-400 text-gray-800)
+      `}
     }
 
     .swiper-button-prev,

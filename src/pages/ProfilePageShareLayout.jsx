@@ -15,7 +15,7 @@ const ProfilePageShareLayout = () => {
 
   useEffect(() => {
     dispatch(updateSearchboxInView(true))
-    // if userId exist means we trying to get other user's data
+    // if userId exist means we are trying to get other user's data
     if (!userId) return
     dispatch(getUser(userId))
   }, [])

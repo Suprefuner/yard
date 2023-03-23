@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useMatch } from "react-router-dom"
 import tw, { styled } from "twin.macro"
 import logo from "../assets/yard_full_logo.svg"
 import { socialMediaIcons, footerLinks, navLinks } from "../utils/links"

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useParams, useNavigate } from "react-router-dom"
 import tw, { styled } from "twin.macro"
@@ -15,7 +15,6 @@ import {
   SingleListingSlider,
   ReviewModal,
   BreadCrumb,
-  Loading,
 } from "../components"
 import { UserInfoReviewMobile } from "../components/mobile"
 import { getSingleListing } from "../features/singleListing/singleListingSlice"
@@ -24,13 +23,10 @@ import { getAllMyReviews } from "../features/review/reviewSlice"
 import { isDesktop } from "../utils/helpers"
 import { openAuthModal } from "../features/user/userSlice"
 
-const SingleListingPage = () => {
-  const [localLoading, setLocalLoading] = useState(true)
+const SingleListingPage = ({ socket }) => {
   const { user } = useSelector((store) => store.user)
   const { favoriteList } = useSelector((store) => store.favorite)
-  const { listing, isLoading, isDelete } = useSelector(
-    (store) => store.singleListing
-  )
+  const { listing, isDelete } = useSelector((store) => store.singleListing)
   const { isModalOpen, reviews } = useSelector((store) => store.review)
   const { id: listingId } = useParams()
   const dispatch = useDispatch()
@@ -43,22 +39,6 @@ const SingleListingPage = () => {
 
   /*
   =====================================================
-  INCREASE MORE LOADING TIME FOR THE IMAGES
-  =====================================================
-  */
-  useEffect(() => {
-    if (isLoading) {
-      return setLocalLoading(true)
-    }
-    const loadingTimer = setTimeout(() => {
-      setLocalLoading(false)
-    }, 1000)
-
-    return () => loadingTimer
-  }, [isLoading])
-
-  /*
-  =====================================================
   REDIRECT AFTER DELETE LISTING
   =====================================================
   */
@@ -66,10 +46,6 @@ const SingleListingPage = () => {
     if (!isDelete) return
     navigate("/")
   }, [isDelete])
-
-  // if (localLoading) {
-  //   return <Loading />
-  // }
 
   const handleClickFavorite = () => {
     !user._id
@@ -170,7 +146,11 @@ const SingleListingPage = () => {
               {meetUpLocation}
             </div>
           </div>
-          {createdBy.user._id === user?._id ? <ListingEditBox /> : <OfferBox />}
+          {createdBy.user._id === user?._id ? (
+            <ListingEditBox />
+          ) : (
+            <OfferBox socket={socket} />
+          )}
         </section>
         <section className="section-description">
           <h2 className="title">Description</h2>
@@ -216,7 +196,7 @@ const Wrapper = styled.main`
     }
 
     .listing-information {
-      ${tw`lg:(flex justify-between)`}
+      ${tw`lg:(flex justify-between items-start)`}
 
       .details {
         ${tw`space-y-1`}

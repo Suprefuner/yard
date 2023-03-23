@@ -2,12 +2,7 @@ import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 import tw, { styled } from "twin.macro"
-import {
-  FaHeart,
-  FaRegHeart,
-  FaRegComment,
-  FaRegCommentDots,
-} from "react-icons/fa"
+import { FaHeart, FaRegHeart, FaRegComment } from "react-icons/fa"
 import { openAuthModal } from "../features/user/userSlice"
 import { logoutUser } from "../features/user/userSlice"
 
@@ -77,12 +72,14 @@ const NavButtons = () => {
             </Link>
           </li>
           <li>
-            {/* FIXME FIX AFTER IMPLEMENT CHAT ROOM */}
-            {/* <Link to="/chat"> */}
-            <FaRegComment className="icon cursor-not-allowed" />
-            {/* <span className="notification">5</span> */}
-            {/* <FaRegCommentDots /> */}
-            {/* </Link> */}
+            <Link to="/chat">
+              <FaRegComment className="icon" />
+              {user?.numOfUnreadMessages !== 0 && (
+                <span className="notification">
+                  {user?.numOfUnreadMessages}
+                </span>
+              )}
+            </Link>
           </li>
         </>
       ) : (
@@ -102,7 +99,7 @@ const NavButtons = () => {
 }
 
 const Wrapper = styled.ul`
-  ${tw`text-white  space-x-2`}
+  ${tw`text-white  space-x-2.5`}
 
   li {
     ${tw`relative cursor-pointer`}

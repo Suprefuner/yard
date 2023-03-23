@@ -15,7 +15,7 @@ const ProfileEditForm = ({ type, title, list, expand = false, params }) => {
   const [showForm, setShowForm] = useState(expand)
   const [isChange, setIsChange] = useState(expand)
   const [values, setValues] = useState({})
-  const { user } = useSelector((store) => store.user)
+  const { user, isLoading } = useSelector((store) => store.user)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -103,6 +103,7 @@ const ProfileEditForm = ({ type, title, list, expand = false, params }) => {
     }
     //==================================================
     dispatch(updateCurrentUser(values))
+    setIsChange(false)
   }
 
   const toggleForm = () => {
@@ -133,7 +134,7 @@ const ProfileEditForm = ({ type, title, list, expand = false, params }) => {
             />
           ))}
           <button className="btn btn-primary" disabled={!isChange}>
-            save change
+            {isLoading ? "Loading..." : "save change"}
           </button>
         </form>
       </div>
@@ -172,7 +173,7 @@ const Wrapper = styled.section`
     }
 
     label {
-      ${tw`capitalize block `}
+      ${tw`capitalize block`}
     }
 
     input,

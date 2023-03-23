@@ -6,6 +6,7 @@ import { ListingCardMobile } from "../components/mobile"
 import { addLocalFavoriteListingToServer } from "../features/favorite/favoriteSlice"
 import { isDesktop } from "../utils/helpers"
 import { Link } from "react-router-dom"
+import { updateSearchboxInView } from "../features/general/generalSlice"
 
 const FavoritePage = () => {
   const { favoriteList, isLoading } = useSelector((store) => store.favorite)
@@ -14,6 +15,7 @@ const FavoritePage = () => {
   // SAVE FAVORITE BY REDUX PERSIST UPLOAD TO DB WHENEVER NEED TO LOAD PAGE
   useEffect(() => {
     dispatch(addLocalFavoriteListingToServer(favoriteList))
+    dispatch(updateSearchboxInView(false))
   }, [])
 
   if (isLoading) {

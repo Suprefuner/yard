@@ -18,9 +18,7 @@ const Image = ({ url, publicId, number, setUploadedPhotos, setPhotos }) => {
     })
 
     // REMOVE PHOTO FROM LOCAL STATE
-    setPhotos((prev) => {
-      return prev.filter((photo) => photo.url !== url)
-    })
+    setPhotos((prev) => prev.filter((photo) => photo.url !== url))
 
     // REMOVE PHOTO FROM REDUX
     dispatch(removePhoto(url))
@@ -31,7 +29,7 @@ const Image = ({ url, publicId, number, setUploadedPhotos, setPhotos }) => {
       <div
         className="tag"
         onClick={() => {
-          // IF EDIT EXISTING LISTING, I NEED TO REMOVE THE PHOTO FROM CLOUDINARY TOO
+          // IF EDIT EXISTING LISTING(IMG ALREADY UPLOADED TO CLOUDINARY), I NEED TO REMOVE THE PHOTO FROM CLOUDINARY TOO
           !url.startsWith("https")
             ? removePhotoFileAndState(url, number)
             : dispatch(removeListingPhotoAtCloudinary(publicId))

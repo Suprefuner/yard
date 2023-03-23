@@ -175,6 +175,19 @@ export const addListingToFavorite = createAsyncThunk(
   }
 )
 
+export const updateNumOfUnreadMessage = createAsyncThunk(
+  "user/updateNumOfUnreadMessage",
+  async (_, thunkAPI) => {
+    try {
+      const { data } = await customFetch("/user/getNumOfUnreadMessage")
+      console.log(data)
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg)
+    }
+  }
+)
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -201,6 +214,9 @@ const userSlice = createSlice({
       state.user.favoriteList = state.user.favoriteList.includes(payload)
         ? state.user.favoriteList.filter((item) => item !== payload)
         : [...state.user.favoriteList, payload]
+    },
+    updateUserNumOfUnreadMessages: (state) => {
+      state.user.numOfUnreadMessages += 1
     },
   },
   extraReducers: (builder) => {
@@ -338,9 +354,18 @@ const userSlice = createSlice({
       .addCase(followUser.rejected, (state) => {
         state.isLoading = false
       })
+      // =============================================================
+      .addCase(updateNumOfUnreadMessage.fulfilled, (state, { payload }) => {
+        state.user.numOfUnreadMessages = payload.data
+      })
   },
 })
 
-export const { openAuthModal, closeAuthModal, setFormType, changeEditMode } =
-  userSlice.actions
+export const {
+  openAuthModal,
+  closeAuthModal,
+  setFormType,
+  changeEditMode,
+  updateUserNumOfUnreadMessages,
+} = userSlice.actions
 export default userSlice.reducer

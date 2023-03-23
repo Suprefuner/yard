@@ -1,3 +1,5 @@
+import customFetch from "./axios"
+
 // DETERMINE DESKTOP OR MOBILE DEVICE
 export const isDesktop = () => {
   return window.innerWidth >= 1024
@@ -43,4 +45,9 @@ export const showImage = (file, Fn) => {
     fileURL = fileReader.onload = () =>
       Fn({ publicId: "", url: fileReader.result })
   }
+}
+
+export const uploadImageToCloudinary = async (image) => {
+  const { data } = await customFetch.post("/message/uploadMessageImage", image)
+  return data
 }
