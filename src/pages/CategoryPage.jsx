@@ -4,7 +4,7 @@ import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { useInView } from "react-intersection-observer"
 import tw, { styled } from "twin.macro"
 import { CategoryProp, Searchbox, ListingCard, Loading } from "../components"
-import { ListingCardMobile } from "../components/mobile"
+import { ListingCardMobile, CarPropsSliderMobile } from "../components/mobile"
 import { categoryPropsList, categoryBanners } from "../utils/links"
 import { isDesktop } from "../utils/helpers"
 import {
@@ -59,7 +59,6 @@ const CategoryPage = () => {
             backgroundImage: `url(${categoryBanners[category]})`,
           }}
         >
-          <div className="bg-image"></div>
           <h2>some slogan</h2>
         </div>
       )}
@@ -78,11 +77,21 @@ const CategoryPage = () => {
         )}
         <section className="popular">
           <h2>{category === "car" ? "popular brands" : "shop by category"}</h2>
-          <div className={`links ${category === "car" && "links-car"}`}>
+          {isDesktop() ? (
+            <div className={`links ${category === "car" && "links-car"}`}>
+              {categoryPropsList[category]?.map((link, i) => (
+                <CategoryProp key={i} {...link} />
+              ))}
+            </div>
+          ) : (
+            <CarPropsSliderMobile />
+          )}
+
+          {/* <div className={`links ${category === "car" && "links-car"}`}>
             {categoryPropsList[category]?.map((link, i) => (
               <CategoryProp key={i} {...link} />
             ))}
-          </div>
+          </div> */}
         </section>
 
         <section className="recent-listed">
@@ -135,7 +144,7 @@ const Wrapper = styled.main`
 
     ${tw`
       h-[var(--height)] mt-[var(--navbar-mobile-size)] mb-5 
-      bg-cover relative after:(absolute inset-0 bg-black/30)
+      bg-cover bg-center relative after:(absolute inset-0 bg-black/30)
     `}
 
     h2 {

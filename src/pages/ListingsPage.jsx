@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams, useLocation } from "react-router-dom"
 import tw, { styled } from "twin.macro"
 import { FaFilter } from "react-icons/fa"
 import {
@@ -28,6 +28,7 @@ const ListingsPage = () => {
   const { favoriteList } = useSelector((store) => store.favorite)
   const { filters } = useSelector((store) => store.filter)
   const dispatch = useDispatch()
+  const location = useLocation()
 
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get("search")
@@ -43,6 +44,7 @@ const ListingsPage = () => {
   const listingsPerLoad = 20
 
   useEffect(() => {
+    console.log("run one off useEffect")
     dispatch(clearFilter())
     dispatch(updateSearchboxInView(false))
     dispatch(addLocalFavoriteListingToServer(favoriteList))
@@ -79,8 +81,10 @@ const ListingsPage = () => {
   }, [])
 
   useEffect(() => {
-    if (searchParams.get("category")) return
+    dispatch(updateFilter({ name: "category", value: category }))
+  }, [location])
 
+  useEffect(() => {
     const queryObject = {}
 
     Object.entries(filters).forEach((item) => {
@@ -224,7 +228,7 @@ const ListingsPage = () => {
 const Wrapper = styled.main`
   .container {
     ${tw`
-      mb-3 space-y-3 overflow-scroll relative
+      mb-10 space-y-3 overflow-scroll relative
       pt-[calc(var(--navbar-mobile-size) + 3rem)] 
       lg:(pt-[calc(var(--navbar-size) + 3rem + 6.4rem)] overflow-auto)
     `}

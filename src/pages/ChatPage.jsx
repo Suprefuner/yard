@@ -24,6 +24,7 @@ const ChatPage = ({ socket }) => {
   const { chatList, currentChat, messages } = useSelector((store) => store.chat)
   const dispatch = useDispatch()
   const chatListRenderCounter = useRef(0)
+  const listingInfoRef = useRef()
   const [searchParams, setSearchParams] = useSearchParams()
   const listing = searchParams.get("listing")
 
@@ -32,7 +33,6 @@ const ChatPage = ({ socket }) => {
     dispatch(toggleFooter(false))
     dispatch(getAllMyChat())
 
-    // return () => dispatch(toggleFooter(true))
     return () => dispatch(toggleFooter(true))
   }, [])
 
@@ -125,7 +125,7 @@ const ChatPage = ({ socket }) => {
               </div>
             ))}
           </div>
-          <Messenger socket={socket} />
+          <Messenger socket={socket} listingInfoRef={listingInfoRef} />
         </div>
       </div>
     </Wrapper>
@@ -137,16 +137,21 @@ const Wrapper = styled.main`
 
   .container {
     ${tw`
-      pt-[calc(var(--navbar-mobile-size) + 2rem)]
-      lg:(pt-[calc(var(--navbar-size))])
-      h-screen
+      pt-[calc(var(--navbar-mobile-size))] px-0 overflow-y-scroll h-screen 
+      lg:(pt-[calc(var(--navbar-size))] px-3 overflow-y-auto)
     `}
 
     &>* {
-      ${tw`grid grid-cols-[40rem_1fr] border-l border-r h-full bg-white`}
+      ${tw`
+        h-full bg-white relative
+        lg:(grid grid-cols-[40rem_1fr] border-l border-r) 
+      `}
 
       & > *:last-child {
-        ${tw`flex-1`}
+        ${tw`
+          absolute top-0 translate-x-full w-screen 
+          lg:(static translate-x-0 flex-1 w-auto)
+        `}
       }
     }
 
@@ -158,7 +163,10 @@ const Wrapper = styled.main`
       }
     }
     .chat-list {
-      ${tw`border-r bg-white overflow-y-auto overflow-x-hidden w-[40rem] h-full`}
+      ${tw`
+        h-full bg-white overflow-y-auto overflow-x-hidden 
+        lg:(w-auto border-r) 
+      `}
     }
   }
 `

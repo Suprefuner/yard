@@ -2,6 +2,7 @@ import { useState } from "react"
 import tw, { styled } from "twin.macro"
 import { BiChevronDown } from "react-icons/bi"
 import { useNavigate } from "react-router-dom"
+import { updateFilter } from "../../features/filter/filterSlice"
 import { showMobileSidebar } from "../../features/general/generalSlice"
 import { useDispatch } from "react-redux"
 
@@ -45,7 +46,11 @@ const SidebarItemMobile = ({ url, text, subLinks }) => {
       {subLinks && (
         <ul className={`sublinks ${subMenuShow && "show"}`}>
           {subLinks.map((link, i) => (
-            <li key={i} onClick={() => searchForCategoryListing(link)}>
+            <li
+              key={i}
+              onClick={() => searchForCategoryListing(link)}
+              className={!subMenuShow ? "pointer-events-none" : ""}
+            >
               {link}
             </li>
           ))}

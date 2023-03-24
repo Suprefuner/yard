@@ -9,8 +9,9 @@ import {
   createChat,
 } from "../features/chat/chatSlice"
 import { updateListingStatus } from "../features/singleListing/singleListingSlice"
+import { isDesktop } from "../utils/helpers"
 
-const ListingInfoMessenger = ({ socket }) => {
+const ListingInfoMessenger = ({ socket, listingInfoRef }) => {
   const [showOfferBox, setShowOfferBox] = useState(false)
   const [makeOffer, setMakeOffer] = useState("")
   const [currentListing, setCurrentListing] = useState({
@@ -181,7 +182,7 @@ const ListingInfoMessenger = ({ socket }) => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper ref={listingInfoRef}>
       <div className="listing-detail">
         <Link to={`/listing/${currentListing?._id}`} className="listing-link">
           <div className="photo-container">
@@ -194,7 +195,7 @@ const ListingInfoMessenger = ({ socket }) => {
           <div className="detail">
             <div className="text">
               <h3 className="listing-name">{currentListing?.name}</h3>
-              <div className="row">
+              <div className={isDesktop() ? "row" : ""}>
                 <h4 className="price">HK${currentListing?.price}</h4>
                 {!searchListing && offer && (
                   <h3>
@@ -278,11 +279,11 @@ const Wrapper = styled.div`
   ${tw`grid gap-2 px-2 py-1.5 border-b`}
 
   .listing-detail {
-    ${tw`flex gap-2 items-center justify-between`}
+    ${tw`flex gap-2 items-center`}
   }
 
   .listing-link {
-    ${tw`flex gap-2 flex-1`}
+    ${tw`flex gap-2 flex-1 items-center lg:(items-start)`}
   }
 
   .photo-container {
@@ -297,7 +298,7 @@ const Wrapper = styled.div`
     ${tw`flex justify-between flex-1`}
 
     span {
-      ${tw`font-light text-gray-700 text-[1.4rem]`}
+      ${tw`font-light text-gray-700 text-sm lg:text-[1.4rem]`}
     }
   }
 

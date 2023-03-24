@@ -1,13 +1,14 @@
 import tw, { styled } from "twin.macro"
 import { HiMenuAlt2 } from "react-icons/hi"
-import { FaHeart, FaRegHeart } from "react-icons/fa"
-import { BsChatRight } from "react-icons/bs"
+import { FaHeart, FaRegHeart, FaRegComment } from "react-icons/fa"
 import SearchboxMobile from "./SearchboxMobile"
 import { Link } from "react-router-dom"
-import { useDispatch } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { showMobileSidebar } from "../../features/general/generalSlice"
 
 const NavbarMobile = () => {
+  const { user } = useSelector((store) => store.user)
+  const { favoriteList } = useSelector((store) => store.favorite)
   const dispatch = useDispatch()
 
   const toggleSidebar = () => dispatch(showMobileSidebar())
@@ -22,15 +23,21 @@ const NavbarMobile = () => {
         <ul className="feature-list">
           <li>
             <Link to="/favorite">
-              <FaHeart className="icon" />
-              {/* <FaRegHeart /> */}
+              {favoriteList.length === 0 ? (
+                <FaRegHeart className="icon" />
+              ) : (
+                <FaHeart className="icon" />
+              )}
             </Link>
           </li>
           <li>
             <Link to="/chat">
-              <BsChatRight className="icon" />
-              <span className="notification">5</span>
-              {/* <BsChatRightDots /> */}
+              <FaRegComment className="icon" />
+              {user?.numOfUnreadMessages !== 0 && (
+                <span className="notification">
+                  {user?.numOfUnreadMessages}
+                </span>
+              )}
             </Link>
           </li>
         </ul>

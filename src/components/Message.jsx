@@ -117,7 +117,7 @@ const Wrapper = styled.div`
 
   .message {
     ${tw`
-      px-1.5 py-[0.75rem] rounded-2xl w-max
+      px-1.5 py-[0.75rem] rounded-2xl w-max max-w-[50vw] lg:(max-w-[20rem])
     `}
   }
 

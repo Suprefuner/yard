@@ -75,10 +75,10 @@ const Wrapper = styled.div`
       ${tw`flex items-center gap-0.5`}
 
       .user-photo {
-        ${tw`w-2 rounded-full`}
+        ${tw`w-2 aspect-square rounded-full`}
 
         img {
-          ${tw`rounded-full`}
+          ${tw`w-full h-full object-cover rounded-full`}
         }
       }
 

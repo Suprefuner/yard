@@ -56,8 +56,8 @@ const AuthForm = () => {
   // ONLY WORK WHEN USE CORS() NOT PROXY
   const handleGoogleLogin = () => {
     // FIXME DEVELOPMENT
-    // window.open("http://localhost:5000/api/v1/auth/google", "_self")
-    window.open("https://yard-api.onrender.com/api/v1/auth/google", "_self")
+    window.open("http://localhost:5000/api/v1/auth/google", "_self")
+    // window.open("https://yard-api.onrender.com/api/v1/auth/google", "_self")
   }
 
   return (

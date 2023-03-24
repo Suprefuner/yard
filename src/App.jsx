@@ -60,8 +60,8 @@ function App() {
   useEffect(() => {
     dispatch(getCurrentUser())
     // FIXME DEVELOPEMENT
-    // socket.current = io("ws://localhost:5000")
-    socket.current = io("ws://yard-api.onrender.com")
+    socket.current = io("ws://localhost:5000")
+    // socket.current = io("ws://yard-api.onrender.com")
   }, [])
 
   useEffect(() => {
@@ -216,7 +216,7 @@ function App() {
             />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
-          {!isDesktop() && <BottomNavbarMobile />}
+          {!isDesktop() && showFooter && <BottomNavbarMobile />}
           {showFooter && <Footer />}
           <ToastContainer
             position="top-right"

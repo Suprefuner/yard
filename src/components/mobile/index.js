@@ -6,6 +6,7 @@ import ListingCardMobile from "./ListingCardMobile"
 import SidebarMobile from "./SidebarMobile"
 import UserInfoMobile from "./UserInfoMobile"
 import UserInfoReviewMobile from "./UserInfoReviewMobile"
+import CarPropsSliderMobile from "./CarPropsSliderMobile"
 
 export {
   NavbarMobile,
@@ -16,4 +17,5 @@ export {
   SidebarMobile,
   UserInfoMobile,
   UserInfoReviewMobile,
+  CarPropsSliderMobile,
 }

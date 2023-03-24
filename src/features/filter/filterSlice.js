@@ -38,6 +38,7 @@ const filterSlice = createSlice({
     },
     updateFilter: (state, { payload }) => {
       const { name, value } = payload
+      console.log(name, value)
       state.filters[name] = value
       state.filtersOptionsShow[name] = false
     },

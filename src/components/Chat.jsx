@@ -14,10 +14,10 @@ import {
   updateLocalMessagesStatus,
   createChat,
 } from "../features/chat/chatSlice"
-import { uploadImageToCloudinary } from "../utils/helpers"
+import { isDesktop, uploadImageToCloudinary } from "../utils/helpers"
 import { toast } from "react-toastify"
 
-const Chat = ({ socket }) => {
+const Chat = ({ socket, listingInfoRef }) => {
   const [inputText, setInputText] = useState("")
   const [arrivalMessage, setArrivalMessage] = useState(null)
   const [isTyping, setIsTyping] = useState(false)
@@ -114,7 +114,11 @@ const Chat = ({ socket }) => {
   }, [arrivalMessage])
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth", block: "end" })
+    scrollRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: !isDesktop() ? "start" : undefined,
+    })
 
     socket?.emit("readMessage", {
       chatId: currentChat._id,
@@ -203,7 +207,12 @@ const Chat = ({ socket }) => {
       <div
         className="messages"
         style={{
-          height: window.innerHeight - 64 - 81 - 81 - 61,
+          height:
+            window.innerHeight -
+            64 -
+            81 -
+            listingInfoRef.current?.offsetHeight -
+            61,
         }}
       >
         {!searchListing &&
@@ -277,7 +286,7 @@ const Wrapper = styled.div`
   }
 
   form {
-    ${tw`flex items-center border-t  `}
+    ${tw`flex items-center border-t`}
 
     input {
       ${tw`flex-1 p-2 pr-4 focus:outline-0`}
